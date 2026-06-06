@@ -12,19 +12,24 @@ def check_id(id):
 	else:
 		log_file.info(id)
 
-if sys.stdin.isatty():
-	while True:
+def main():
+	if sys.stdin.isatty():
+		while True:
+			try:
+				current_id = input()
+				check_id(current_id)
+				print()
+			except KeyboardInterrupt:
+				sys.exit(0)
+
+	else:
 		try:
-			current_id = input()
-			check_id(current_id)
-			print()
+			for current_id in sys.stdin:
+				check_id(current_id)
+
 		except KeyboardInterrupt:
 			sys.exit(0)
 
-else:
-	try:
-		for current_id in sys.stdin:
-			check_id(current_id)
 
-	except KeyboardInterrupt:
-		sys.exit(0)
+if __name__=="__main__":
+	main()
