@@ -6,3 +6,9 @@ env:
 
 update:  env
 	. env/bin/activate; pip install -r requirements.txt
+
+lint:
+	pylint clean_ids.py
+
+test: lint
+	python3 -m pytest -vv tests
