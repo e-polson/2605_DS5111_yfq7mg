@@ -1,0 +1,20 @@
+2026-06-12 21:12:24,131 - INFO - Pipeline Step 2A (Raw Extraction) started.
+2026-06-12 21:12:24,131 - WARNING - No proxy credentials found. Running with direct raw local IP routing.
+2026-06-12 21:12:24,132 - INFO - Processing transcript extraction for video: fake_video_999
+2026-06-12 21:12:24,367 - ERROR - Failed to fetch YouTube transcript for fake_video_999: 
+Could not retrieve a transcript for the video https://www.youtube.com/watch?v=fake_video_999! This is most likely caused by:
+
+The video is no longer available
+
+If you are sure that the described cause is not responsible for this error and that a transcript should be retrievable, please create an issue at https://github.com/jdepoix/youtube-transcript-api/issues. Please add which version of youtube_transcript_api you are using and provide the information needed to replicate the error. Also make sure that there are no open issues which already describe your problem!
+2026-06-12 21:12:24,368 - INFO - Pipeline Step 2A finished.
+2026-06-12 21:19:52,198 - INFO - Pipeline Step 2A (Raw Extraction) started.
+2026-06-12 21:19:52,198 - WARNING - No proxy credentials found. Running with direct raw local IP routing.
+2026-06-12 21:19:52,198 - INFO - Processing transcript extraction for video: fake_video_999
+2026-06-12 21:19:52,381 - ERROR - Failed to fetch YouTube transcript for fake_video_999: 
+Could not retrieve a transcript for the video https://www.youtube.com/watch?v=fake_video_999! This is most likely caused by:
+
+The video is no longer available
+
+If you are sure that the described cause is not responsible for this error and that a transcript should be retrievable, please create an issue at https://github.com/jdepoix/youtube-transcript-api/issues. Please add which version of youtube_transcript_api you are using and provide the information needed to replicate the error. Also make sure that there are no open issues which already describe your problem!
+2026-06-12 21:19:52,381 - INFO - Pipeline Step 2A finished.
