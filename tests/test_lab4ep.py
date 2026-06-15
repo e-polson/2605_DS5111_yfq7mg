@@ -72,7 +72,7 @@ def test_extract_transcripts_error_handling_and_continuation(monkeypatch, capsys
     stdout_lines = [line for line in captured_output.out.strip().split("\n") if line]
 
     # 5. Execute structural validations
-    # The bad ID should be caught by your try/except block, meaning nothing is emitted to stdout for it.
+    # The bad ID should be caught by try/except block, meaning nothing is emitted to stdout for it.
     # The loop should continue and still emit a row for 'fake_video_999'.
     assert len(stdout_lines) == 1, "The pipeline should gracefully skip the failed ID and emit exactly 1 row for the valid ID."
 
