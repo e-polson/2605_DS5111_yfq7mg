@@ -30,7 +30,7 @@ def main():
 		# TODO:  Use YouTubeTranscriptApi with a keyword argument proxy_config.
 		#    Use WebshareProxyConfig to create the proxy using the username and password
 		ytt_api = YouTubeTranscriptApi(
-			proxy_config=WebshareProxyConfig(username=proxy_user, password=proxy_pass)
+			proxy_config=WebshareProxyConfig(proxy_username=proxy_user, proxy_password=proxy_pass)
 		)
 	else:
 		logging.warning("No proxy credentials found. Running with direct raw local IP routing.")

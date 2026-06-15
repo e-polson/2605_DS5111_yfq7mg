@@ -18,3 +18,9 @@ The video is no longer available
 
 If you are sure that the described cause is not responsible for this error and that a transcript should be retrievable, please create an issue at https://github.com/jdepoix/youtube-transcript-api/issues. Please add which version of youtube_transcript_api you are using and provide the information needed to replicate the error. Also make sure that there are no open issues which already describe your problem!
 2026-06-12 21:19:52,381 - INFO - Pipeline Step 2A finished.
+2026-06-15 23:34:38,977 - INFO - Pipeline Step 2A (Raw Extraction) started.
+2026-06-15 23:34:38,977 - INFO - Proxy credentials detected. Routing traffic via Webshare Residential network.
+2026-06-15 23:36:08,182 - INFO - Pipeline Step 2A (Raw Extraction) started.
+2026-06-15 23:36:08,182 - INFO - Proxy credentials detected. Routing traffic via Webshare Residential network.
+2026-06-15 23:36:08,182 - INFO - Processing transcript extraction for video: dQw4w9WgXcQ
+2026-06-15 23:36:13,201 - INFO - Pipeline Step 2A finished.
