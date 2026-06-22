@@ -1,0 +1,8 @@
+2026-06-22 22:46:02,456 - INFO - Pipeline Step 2B (Gemini Enrichment) started.
+2026-06-22 22:46:02,534 - INFO - Orchestrating Gemini enrichment for video: ds5111_v001
+2026-06-22 22:46:02,534 - INFO - AFC is enabled with max remote calls: 10.
+2026-06-22 22:46:04,883 - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-06-22 22:46:04,886 - INFO - Orchestrating Gemini enrichment for video: ds5111_v002
+2026-06-22 22:46:04,886 - INFO - AFC is enabled with max remote calls: 10.
+2026-06-22 22:46:06,859 - INFO - HTTP Request: POST https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent "HTTP/1.1 200 OK"
+2026-06-22 22:46:06,860 - INFO - Pipeline Step 2B finished.
