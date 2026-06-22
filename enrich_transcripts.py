@@ -26,13 +26,11 @@ def main():
     # If the token is missing, log a critical failure and terminate the system.
     # Otherwise, instantiate the official Google GenAI Client utility.
     # -------------------------------------------------------------------------
-    # === YOUR CODE HERE ===
     api_key = os.getenv("GEMINI_API_KEY")
     if not api_key:
         logging.critical("GEMINI_API_KEY environment variable evaluates to None. Hard programmatic termination triggered.")
         sys.exit(1)
     client = genai.Client(api_key=api_key)
-    # ======================
 
     # -------------------------------------------------------------------------
     # TODO 2: Structured Output Response Schema Definition
@@ -47,16 +45,12 @@ def main():
     #   - book_names: (ARRAY of STRINGS)
     # -------------------------------------------------------------------------
     response_schema = {
-        # === YOUR CODE HERE ===
-        "type": "OBJECT",
+        "type": "object",
         "properties": {
-            "video_id": {"type": "STRING"},
-            "cleaned_text": {"type": "STRING"},
-            "tech_terms": {"type": "ARRAY", "items": {"type": "STRING"}},
-            "book_names": {"type": "ARRAY", "items": {"type": "STRING"}}
+            "video_id": {"type": "string"},
+            "cleaned_text": {"type": "string"}
         },
-        "required": ["video_id", "cleaned_text", "tech_terms", "book_names"]
-        # ======================
+        "required": ["video_id", "cleaned_text"]
     }
 
     # Stream processing framework reading line-by-line text inputs from stdin
@@ -103,10 +97,12 @@ def main():
 
             response = client.models.generate_content(
                 model='gemini-2.5-flash',
-                contents=full_prompt,
+                contents=raw_text,
                 config=types.GenerateContentConfig(
                     response_mime_type="application/json",
-                    response_schema=response_schema
+                    response_schema=response_schema,
+		    system_response=prompt,
+		    temperature=0.1
                 )
             )
 
