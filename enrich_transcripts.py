@@ -45,10 +45,10 @@ def main():
     #   - book_names: (ARRAY of STRINGS)
     # -------------------------------------------------------------------------
     response_schema = {
-        "type": "object",
+        "type": "OBJECT",
         "properties": {
-            "video_id": {"type": "string"},
-            "cleaned_text": {"type": "string"}
+            "video_id": {"type": "STRING"},
+            "cleaned_text": {"type": "STRING"}
         },
         "required": ["video_id", "cleaned_text"]
     }
@@ -97,11 +97,10 @@ def main():
 
             response = client.models.generate_content(
                 model='gemini-2.5-flash',
-                contents=raw_text,
+                contents=full_prompt,
                 config=types.GenerateContentConfig(
                     response_mime_type="application/json",
                     response_schema=response_schema,
-		    system_response=prompt,
 		    temperature=0.1
                 )
             )
