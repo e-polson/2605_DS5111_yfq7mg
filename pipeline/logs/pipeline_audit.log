@@ -24,3 +24,23 @@ If you are sure that the described cause is not responsible for this error and t
 2026-06-15 23:36:08,182 - INFO - Proxy credentials detected. Routing traffic via Webshare Residential network.
 2026-06-15 23:36:08,182 - INFO - Processing transcript extraction for video: dQw4w9WgXcQ
 2026-06-15 23:36:13,201 - INFO - Pipeline Step 2A finished.
+2026-06-22 22:27:20,561 - INFO - Pipeline Step 2A (Raw Extraction) started.
+2026-06-22 22:27:20,562 - WARNING - No proxy credentials found. Running with direct raw local IP routing.
+2026-06-22 22:27:20,562 - INFO - Pipeline Step 2A finished.
+2026-06-22 22:27:55,237 - INFO - Pipeline Step 2A (Raw Extraction) started.
+2026-06-22 22:27:55,237 - WARNING - No proxy credentials found. Running with direct raw local IP routing.
+2026-06-22 22:27:55,238 - INFO - Processing transcript extraction for video: {"video_id": "ds5111_v001", "raw_text": "00:01 Welcome back to class! Today we are discussing Snowflake VARIANT columns and dbt staging transformations. Let's look at how to unpack semi-structured records. Make sure to refer to Martin Kleppmann's text, Designing Data-Intensive Applications. 00:45 Next, configure the staging view using a standard SELECT query statement."}
+2026-06-22 22:27:55,552 - ERROR - Failed to fetch YouTube transcript for {"video_id": "ds5111_v001", "raw_text": "00:01 Welcome back to class! Today we are discussing Snowflake VARIANT columns and dbt staging transformations. Let's look at how to unpack semi-structured records. Make sure to refer to Martin Kleppmann's text, Designing Data-Intensive Applications. 00:45 Next, configure the staging view using a standard SELECT query statement."}: 
+Could not retrieve a transcript for the video https://www.youtube.com/watch?v={"video_id": "ds5111_v001", "raw_text": "00:01 Welcome back to class! Today we are discussing Snowflake VARIANT columns and dbt staging transformations. Let's look at how to unpack semi-structured records. Make sure to refer to Martin Kleppmann's text, Designing Data-Intensive Applications. 00:45 Next, configure the staging view using a standard SELECT query statement."}! This is most likely caused by:
+
+The video is no longer available
+
+If you are sure that the described cause is not responsible for this error and that a transcript should be retrievable, please create an issue at https://github.com/jdepoix/youtube-transcript-api/issues. Please add which version of youtube_transcript_api you are using and provide the information needed to replicate the error. Also make sure that there are no open issues which already describe your problem!
+2026-06-22 22:27:55,552 - INFO - Processing transcript extraction for video: {"video_id": "ds5111_v002", "raw_text": "00:10 In this module, we are automating custom stock execution blocks via the Alpaca API using AWS Lambda functions. 00:35 To understand the underlying cognitive workflows and feedback loops, I highly recommend reading the book Free Agents. 01:15 Let's push this code through our parallel GitHub Actions linter check."}
+2026-06-22 22:27:55,804 - ERROR - Failed to fetch YouTube transcript for {"video_id": "ds5111_v002", "raw_text": "00:10 In this module, we are automating custom stock execution blocks via the Alpaca API using AWS Lambda functions. 00:35 To understand the underlying cognitive workflows and feedback loops, I highly recommend reading the book Free Agents. 01:15 Let's push this code through our parallel GitHub Actions linter check."}: 
+Could not retrieve a transcript for the video https://www.youtube.com/watch?v={"video_id": "ds5111_v002", "raw_text": "00:10 In this module, we are automating custom stock execution blocks via the Alpaca API using AWS Lambda functions. 00:35 To understand the underlying cognitive workflows and feedback loops, I highly recommend reading the book Free Agents. 01:15 Let's push this code through our parallel GitHub Actions linter check."}! This is most likely caused by:
+
+The video is no longer available
+
+If you are sure that the described cause is not responsible for this error and that a transcript should be retrievable, please create an issue at https://github.com/jdepoix/youtube-transcript-api/issues. Please add which version of youtube_transcript_api you are using and provide the information needed to replicate the error. Also make sure that there are no open issues which already describe your problem!
+2026-06-22 22:27:55,804 - INFO - Pipeline Step 2A finished.
