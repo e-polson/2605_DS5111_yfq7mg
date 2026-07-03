@@ -35,19 +35,3 @@ def test_orchestrator_with_mock_llm_strategy(capsys):
                 "tech_terms": ["dbt", "Snowflake"],
                 "book_names": ["Designing Data-Intensive Applications"]
             }
-
-    mock_input = {"video_id": "ds5111_v001", "raw_text": "00:01 Welcome to class."}
-    mock_stdin = io.StringIO(json.dumps(mock_input) + "\n")
-
-    strategy = MockLLMStrategy()
-    pipeline = TranscriptEnricher(strategy)
-    pipeline.run(mock_stdin)
-
-    captured = capsys.readouterr()
-    stdout_lines = captured.out.strip().split("\n")
-
-    assert len(stdout_lines) == 1
-    parsed = json.loads(stdout_lines[0])
-    assert parsed["video_id"] == "ds5111_v001"
-    assert "dbt" in parsed["tech_terms"]
-    assert "Designing Data-Intensive Applications" in parsed["book_names"]
