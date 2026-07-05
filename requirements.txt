@@ -2,3 +2,6 @@ pandas
 numpy
 pylint
 pytest
+google-genai
+youtube-transcipt-api
+python-dotenv
