@@ -7,12 +7,18 @@ from dotenv import load_dotenv
 from google import genai
 from google.genai import types
 
-# Load environmental configurations from local workspace files
-load_dotenv()
+# Define explicit project layout structural directories
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+LOG_DIR = os.path.join(BASE_DIR, 'logs')
+os.makedirs(LOG_DIR, exist_ok=True)
 
-# Audit logging framework tracking pipeline telemetry
+# Correct pathing context to look for the .env file in the project root directory
+ENV_PATH = os.path.join(BASE_DIR, '.env')
+load_dotenv(dotenv_path=ENV_PATH)
+
+# Audit logging framework tracking pipeline telemetry safely inside /logs
 logging.basicConfig(
-    filename='logs/pipeline_audit.log',
+    filename=os.path.join(LOG_DIR, 'pipeline_audit.log'),
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s'
 )

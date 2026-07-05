@@ -7,13 +7,15 @@ from abc import ABC, abstractmethod
 from google import genai
 from google.genai import types  # pylint: disable=unused-import
 
+# Load environment variables from the root .env file
+try:
+    from dotenv import load_dotenv
+    # Points to the .env file in the parent directory of this script
+    env_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '.env'))
+    load_dotenv(dotenv_path=env_path)
+except ImportError:
+    logging.warning("python-dotenv package not found. Relying on system environment variables.")
 
-class EnrichmentStrategy(ABC):  # pylint: disable=too-few-public-methods
-    """Abstract base class defining the enrichment contract."""
-
-    @abstractmethod
-    def enrich(self, video_id: str, raw_text: str) -> dict:
-        """Enrich a transcript record and return a structured dict."""
 
 class LLMStrategy(ABC):  # pylint: disable=too-few-public-methods
     """Strict contract for LLM-based enrichment implementations."""
@@ -45,6 +47,7 @@ class GeminiEnrichmentStrategy(LLMStrategy):  # pylint: disable=too-few-public-m
         if not api_key:
             logging.critical("GEMINI_API_KEY missing. Cannot initialize GeminiEnrichmentStrategy.")
             raise ValueError("GEMINI_API_KEY environment variable is not set.")
+        
         self.client = genai.Client(api_key=api_key)
         self.response_schema = {
             "type": "OBJECT",
@@ -54,11 +57,40 @@ class GeminiEnrichmentStrategy(LLMStrategy):  # pylint: disable=too-few-public-m
                 "tech_terms": {"type": "ARRAY", "items": {"type": "STRING"}},
                 "book_names": {"type": "ARRAY", "items": {"type": "STRING"}}
             },
-            "required": ["video_id", "cleaned_text"]
+            "required": ["video_id", "cleaned_text", "tech_terms", "book_names"]
         }
 
     def enrich(self, video_id: str, raw_text: str) -> dict:
         """Invoke Gemini API and return structured enrichment dict."""
+        prompt = (
+            f"Analyze the following video transcript chunk for video_id '{video_id}':\n\n"
+            f"Transcript text:\n{raw_text}\n\n"
+            "Tasks:\n"
+            "1. Clean up minor typographical or formatting noise if necessary for 'cleaned_text'.\n"
+            "2. Extract any technical terms, frameworks, tools, or platforms into 'tech_terms'.\n"
+            "3. Extract any formal book titles or textbook mentions into 'book_names'."
+        )
+
+        try:
+            response = self.client.models.generate_content(
+                model='gemini-2.5-flash',
+                contents=prompt,
+                config=types.GenerateContentConfig(
+                    response_mime_type="application/json",
+                    response_schema=self.response_schema,
+                    temperature=0.1,
+                ),
+            )
+            return json.loads(response.text)
+            
+        except Exception as e:
+            logging.error("Gemini live execution failed for video %s: %s", video_id, e)
+            return {
+                "video_id": video_id,
+                "cleaned_text": raw_text,
+                "tech_terms": [],
+                "book_names": []
+            }
 
 
 class TranscriptEnricher:  # pylint: disable=too-few-public-methods
@@ -77,7 +109,7 @@ class TranscriptEnricher:  # pylint: disable=too-few-public-methods
             try:
                 record = json.loads(line)
                 video_id = record.get("video_id", "")
-                raw_text = record.get("raw_text", "")
+                raw_text = record.get("raw_text") or record.get("cleaned_text") or ""
             except Exception as e:  # pylint: disable=broad-except
                 logging.error("Failed to parse record: %s", e)
                 continue
@@ -89,7 +121,7 @@ class TranscriptEnricher:  # pylint: disable=too-few-public-methods
 
 def main():
     """Entry point: wire strategy into pipeline and run against stdin."""
-    strategy = ClaudeEnrichmentStrategy()
+    strategy = GeminiEnrichmentStrategy()
     pipeline = TranscriptEnricher(strategy)
     pipeline.run(sys.stdin)
 

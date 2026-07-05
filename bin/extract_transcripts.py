@@ -8,14 +8,18 @@ from dotenv import load_dotenv
 from youtube_transcript_api import YouTubeTranscriptApi
 from youtube_transcript_api.proxies import WebshareProxyConfig
 
-# TODO: use the loaded dotenv function to conditionally load the credentials from .env
-load_dotenv()
+# Define absolute path structures to match the new layout
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+LOG_DIR = os.path.join(BASE_DIR, 'logs')
+os.makedirs(LOG_DIR, exist_ok=True)
 
-# Direct logging statements to a shared audit log asset
+ENV_PATH = os.path.join(BASE_DIR, '.env')
+load_dotenv(dotenv_path=ENV_PATH)
+
 logging.basicConfig(
-	filename='pipeline/logs/pipeline_audit.log',
-	level=logging.INFO,
-	format='%(asctime)s - %(levelname)s - %(message)s'
+        filename=os.path.join(LOG_DIR, 'pipeline_audit.log'),
+        level=logging.INFO,
+        format='%(asctime)s - %(levelname)s - %(message)s'
 )
 
 def main():

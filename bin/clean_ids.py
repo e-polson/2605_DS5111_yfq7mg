@@ -2,19 +2,30 @@
 This module cleans up string IDs from standard input
 """
 
+import os
 import re
 import sys
 import logging
 
-log_file = logging.getLogger(__name__)
+# Set up absolute pathing to ensure logs land cleanly in the /logs directory
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+LOG_DIR = os.path.join(BASE_DIR, 'logs')
 
+# Create the logs directory if it doesn't exist yet
+os.makedirs(LOG_DIR, exist_ok=True)
+
+# Configure logging to point directly into logs/pipeline_autid.log
 logging.basicConfig(
-    filename='pipeline_autid.log',
+    filename=os.path.join(LOG_DIR, 'pipeline_autid.log'),
     encoding='utf-8',
     filemode='w',
     level=logging.INFO,
     format='%(message)s'
 )
+
+log_file = logging.getLogger(__name__)
+
+log_file = logging.getLogger(__name__)
 
 def check_id(id_str):
     """Confirms whether a string is a valid ID"""
