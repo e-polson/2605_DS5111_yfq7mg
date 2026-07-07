@@ -1,7 +1,16 @@
 """Tests for the OOP enrichment pipeline."""
+
 import io
 import json
-from enrich_transcripts_oop import ClaudeEnrichmentStrategy, TranscriptEnricher, LLMStrategy  # pylint: disable=import-error
+import os
+import sys
+
+# Inject root paths so pytest can discover local files when executing from root
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../bin")))
+
+# pylint: disable=wrong-import-position, import-error
+from enrich_transcripts_oop import ClaudeEnrichmentStrategy, TranscriptEnricher, LLMStrategy
 
 def test_pipeline_emits_enriched_records(capsys):
     """Verify pipeline reads mock stdin and emits valid enriched JSON."""

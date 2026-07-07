@@ -5,15 +5,21 @@ PIP = $(ENV)/bin/pip
 default:
 	@cat Makefile
 
-$(ENV):
-	python3 -m venv $(ENV)
-	$(PIP) install --upgrade pip
+env:
+	@if [ ! -d "$(ENV_DIR)" ]; then \
+		python3 -m venv $(ENV_DIR); \
+		$(PIP) install --upgrade pip; \
+	fi
 
 update: $(ENV)
 	$(PIP) install -r requirements.txt
 
 lint: $(ENV)
 	$(PYTHON) -m pylint bin/ lib/ tests/ --min-similarity-lines=25 ##added because of tests/ files
+
+run: $(ENV)
+	@echo "Executing pipeline end-to-end..."
+	@cat mock_transcripts.jsonl | $(PYTHON) -u bin/enrich_transcripts.py | $(PYTHON) tests/validate_schema.py
 
 test_enrich: $(ENV)
 	@cat mock_transcripts.jsonl | $(PYTHON) -u bin/enrich_transcripts.py | $(PYTHON) tests/validate_schema.py

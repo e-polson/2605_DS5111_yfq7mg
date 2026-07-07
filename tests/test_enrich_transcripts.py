@@ -30,8 +30,9 @@ def test_enrich_transcripts_streaming_pipeline(monkeypatch, capsys):
     """
 
     # Prefix unused arguments with an underscore to clear W0613 warnings cleanly
-    def mock_generate_content(_self, _model, _contents, _config=None):
+    def mock_generate_content(_self, model, contents, config=None):
         """Pre-baked, schema-compliant JSON string mimicking model output."""
+	# pylint: disable=unused-argument
         mock_data = {
             "video_id": "ds5111_v001",
             "cleaned_text": "Welcome to class. Today we are testing mock frameworks.",
