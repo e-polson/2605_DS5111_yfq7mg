@@ -1,10 +1,14 @@
+"""Pipeline validation script to enforce structural data contracts on JSON Lines output."""
+
 #!/usr/bin/env python3
 import sys
 import json
 
+
+# pylint: disable=too-many-return-statements
 def validate_payload(line_num, payload):
-    """
-    Validates a single line of JSON data against the target API contract.
+    """Validates a single line of JSON data against the target API contract.
+
     Returns True if valid, False otherwise.
     """
     required_fields = ["video_id", "cleaned_text"]
@@ -34,17 +38,24 @@ def validate_payload(line_num, payload):
     for field in optional_fields:
         if field in payload:
             if not isinstance(payload[field], list):
-                print(f"❌ [Row {line_num}] Type Failure: '{field}' must be an ARRAY (Python list).")
+                print(
+                    f"❌ [Row {line_num}] Type Failure: '{field}' must be an ARRAY (Python list)."
+                )
                 return False
 
             # Ensure every element inside the array is a string primitive
             if not all(isinstance(item, str) for item in payload[field]):
-                print(f"❌ [Row {line_num}] Type Failure: All elements inside '{field}' must be STRINGS.")
+                print(
+                    f"❌ [Row {line_num}] Type Failure: "
+                    f"All elements inside '{field}' must be STRINGS."
+                )
                 return False
 
     return True
 
+
 def main():
+    """Reads JSON lines from stdin, processes validation, and exits with status codes."""
     print("🚀 Starting pipeline data contract validation...")
     total_records = 0
     failed_records = 0
@@ -53,7 +64,7 @@ def main():
         line = line.strip()
         if not line:
             continue
-            
+
         total_records += 1
         try:
             data = json.loads(line)
@@ -71,8 +82,11 @@ def main():
         print(f"🔴 Failure: {failed_records}/{total_records} records violated the schema contract.")
         sys.exit(1)
     else:
-        print(f"🟢 Success: All {total_records} records successfully match the required data contract!")
+        print(
+            f"🟢 Success: All {total_records} records successfully match the required data contract!"
+        )
         sys.exit(0)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()

@@ -13,7 +13,7 @@ update: $(ENV)
 	$(PIP) install -r requirements.txt
 
 lint: $(ENV)
-	$(PYTHON) -m pylint bin/ lib/ tests/
+	$(PYTHON) -m pylint bin/ lib/ tests/ --min-similarity-lines=25 ##added because of tests/ files
 
 test_enrich: $(ENV)
 	@cat mock_transcripts.jsonl | $(PYTHON) -u bin/enrich_transcripts.py | $(PYTHON) tests/validate_schema.py

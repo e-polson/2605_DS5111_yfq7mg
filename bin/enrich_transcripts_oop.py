@@ -1,4 +1,5 @@
 """Enrichment pipeline using the Strategy Pattern."""
+
 import os
 import sys
 import json
@@ -10,8 +11,9 @@ from google.genai import types  # pylint: disable=unused-import
 # Load environment variables from the root .env file
 try:
     from dotenv import load_dotenv
+
     # Points to the .env file in the parent directory of this script
-    env_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '.env'))
+    env_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".env"))
     load_dotenv(dotenv_path=env_path)
 except ImportError:
     logging.warning("python-dotenv package not found. Relying on system environment variables.")
@@ -30,12 +32,7 @@ class ClaudeEnrichmentStrategy(LLMStrategy):  # pylint: disable=too-few-public-m
 
     def enrich(self, video_id: str, raw_text: str) -> dict:
         """Return a hardcoded enrichment payload simulating Claude output."""
-        return {
-            "video_id": video_id,
-            "cleaned_text": raw_text,
-            "tech_terms": [],
-            "book_names": []
-        }
+        return {"video_id": video_id, "cleaned_text": raw_text, "tech_terms": [], "book_names": []}
 
 
 class GeminiEnrichmentStrategy(LLMStrategy):  # pylint: disable=too-few-public-methods
@@ -47,7 +44,7 @@ class GeminiEnrichmentStrategy(LLMStrategy):  # pylint: disable=too-few-public-m
         if not api_key:
             logging.critical("GEMINI_API_KEY missing. Cannot initialize GeminiEnrichmentStrategy.")
             raise ValueError("GEMINI_API_KEY environment variable is not set.")
-        
+
         self.client = genai.Client(api_key=api_key)
         self.response_schema = {
             "type": "OBJECT",
@@ -55,9 +52,9 @@ class GeminiEnrichmentStrategy(LLMStrategy):  # pylint: disable=too-few-public-m
                 "video_id": {"type": "STRING"},
                 "cleaned_text": {"type": "STRING"},
                 "tech_terms": {"type": "ARRAY", "items": {"type": "STRING"}},
-                "book_names": {"type": "ARRAY", "items": {"type": "STRING"}}
+                "book_names": {"type": "ARRAY", "items": {"type": "STRING"}},
             },
-            "required": ["video_id", "cleaned_text", "tech_terms", "book_names"]
+            "required": ["video_id", "cleaned_text", "tech_terms", "book_names"],
         }
 
     def enrich(self, video_id: str, raw_text: str) -> dict:
@@ -73,7 +70,7 @@ class GeminiEnrichmentStrategy(LLMStrategy):  # pylint: disable=too-few-public-m
 
         try:
             response = self.client.models.generate_content(
-                model='gemini-2.5-flash',
+                model="gemini-2.5-flash",
                 contents=prompt,
                 config=types.GenerateContentConfig(
                     response_mime_type="application/json",
@@ -82,14 +79,14 @@ class GeminiEnrichmentStrategy(LLMStrategy):  # pylint: disable=too-few-public-m
                 ),
             )
             return json.loads(response.text)
-            
-        except Exception as e:
-            logging.error("Gemini live execution failed for video %s: %s", video_id, e)
+
+        except Exception as err:  # pylint: disable=broad-exception-caught
+            logging.error("Gemini live execution failed for video %s: %s", video_id, err)
             return {
                 "video_id": video_id,
                 "cleaned_text": raw_text,
                 "tech_terms": [],
-                "book_names": []
+                "book_names": [],
             }
 
 
@@ -110,8 +107,8 @@ class TranscriptEnricher:  # pylint: disable=too-few-public-methods
                 record = json.loads(line)
                 video_id = record.get("video_id", "")
                 raw_text = record.get("raw_text") or record.get("cleaned_text") or ""
-            except Exception as e:  # pylint: disable=broad-except
-                logging.error("Failed to parse record: %s", e)
+            except Exception as err:  # pylint: disable=broad-except
+                logging.error("Failed to parse record: %s", err)
                 continue
 
             result = self.strategy.enrich(video_id, raw_text)
@@ -126,5 +123,5 @@ def main():
     pipeline.run(sys.stdin)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
