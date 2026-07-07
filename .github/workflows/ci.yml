@@ -10,6 +10,10 @@ jobs:
   continuous-integration:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
+
     steps:
       - name: Checkout Repository Code
         uses: actions/checkout@v4
@@ -17,7 +21,7 @@ jobs:
       - name: Initialize System Python Environment
         uses: actions/setup-python@v5
         with:
-          python-version: '3.14'
+          python-version: ${{ matrix.python-version }}
           cache: 'pip'
 
       - name: Build Project Dependencies via Contract
