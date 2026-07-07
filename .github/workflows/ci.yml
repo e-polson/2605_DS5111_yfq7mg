@@ -1,4 +1,4 @@
-name: Data Pipeline CI Quality Gate
+name: Continuous Integration Quality Pipeline
 
 on:
   push:
@@ -7,28 +7,56 @@ on:
     branches: [ main, master ]
 
 jobs:
-  continuous-integration:
+  # JOB 1: Code Style & Syntax Auditing running in parallel
+  lint:
+    name: Code Quality Inspection (Linter)
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
         python-version: ["3.11", "3.12", "3.13"]
 
     steps:
-      - name: Checkout Repository Code
+      - name: Checkout Source Code
         uses: actions/checkout@v4
 
-      - name: Initialize System Python Environment
+      - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
           cache: 'pip'
 
-      - name: Build Project Dependencies via Contract
-        run: make update
+      - name: Install Runtime Dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
+      # Pass control directly to the local Makefile interface contract
       - name: Run Code Quality Checks
         run: make lint
 
+  # JOB 2: Functional Test Executions running in parallel
+  test:
+    name: Unit Testing Engine (Pytest)
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip'
+
+      - name: Install Runtime Dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      # Pass control directly to the local Makefile interface contract
       - name: Run Complete Test Engine Suite
         run: make test
