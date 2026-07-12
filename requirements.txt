@@ -5,3 +5,4 @@ pytest
 google-genai
 youtube-transcript-api
 python-dotenv
+snowflake-connector-python

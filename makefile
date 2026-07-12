@@ -42,3 +42,9 @@ test_enrich_oop:
 clean:
 	rm -rf __pycache__ bin/__pycache__ lib/__pycache__ tests/__pycache__ .pytest_cache
 	rm -f logs/*.log
+
+
+.PHONY: load
+load:
+	@echo "Initiating Cloud Data Warehouse Synchronizer Node..."
+	cat data/enriched_transcripts.jsonl | python bin/load_snowflake.py
