@@ -6,12 +6,18 @@ import logging
 import snowflake.connector
 from dotenv import load_dotenv
 
+# Set up absolute pathing to ensure logs land cleanly in the /logs directory
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+LOG_DIR = os.path.join(BASE_DIR, "logs")
+os.makedirs(LOG_DIR, exist_ok=True)
+
 # Establish clean centralized diagnostic logging metrics output footprint
 logging.basicConfig(
-    filename='pipeline/logs/pipeline_audit.log',
+    filename=os.path.join(LOG_DIR, "pipeline_audit.log"),
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s'
 )
+
 
 def main():
     # Initialize the environment variables from the local .env file
@@ -21,11 +27,11 @@ def main():
 
     sf_user = os.getenv('SF_USER')
     sf_password = os.getenv('SF_PASSWORD')
-    
+
     if not sf_user or not sf_password:
         logging.critical("Missing critical Snowflake runtime credential bindings. Ingestion aborted.")
         sys.exit(1)
-        
+ 
     try:
         ### TODO 1 CODE START HERE
         # Establish the connection using environment variables
