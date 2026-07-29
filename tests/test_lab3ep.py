@@ -1,12 +1,18 @@
-"""
-This module contains tests for checking environment conditions and script execution of our ID check script
-"""
+"""Tests for tracking environment conditions and ID check execution."""
 
-import sys
-import platform
 import io
+import os
+import platform
+import sys
 import pytest
+
+# Dynamically patch sys.path so Pylint and Python can resolve clean_ids
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../bin")))
+
+# pylint: disable=wrong-import-position, import-error
 from clean_ids import main
+
 
 def run_script_with_input(monkeypatch, capsys, input_data):
     """Helper function for stdin and stdout"""
@@ -42,11 +48,11 @@ def test_future_feature_placeholder():
     "input_data,expected_output",
     [
         ("kcFsuxaJ1es\nasd123\n", "kcFsuxaJ1es\n"),  # Original multi-line test
-        ("validID1234\n", "validID1234\n"),          # ID must be 11 characters
-        ("short\n", ""),                             # Too short -> Logs
-        ("thisIdIsWayTooLong\n", ""),                # Too long -> Logs
-        ("special$$$12\n", ""),                      # Bad characters -> Logs
-    ]
+        ("validID1234\n", "validID1234\n"),  # ID must be 11 characters
+        ("short\n", ""),  # Too short -> Logs
+        ("thisIdIsWayTooLong\n", ""),  # Too long -> Logs
+        ("special$$$12\n", ""),  # Bad characters -> Logs
+    ],
 )
 def test_check_id_variations(monkeypatch, capsys, input_data, expected_output):
     """Parametrized test checking multiple types of ID structures"""
