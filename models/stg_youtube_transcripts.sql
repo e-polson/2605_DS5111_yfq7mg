@@ -1,3 +1,4 @@
+-- Step 1 (converted to dbt syntax)
 {{ config(materialized='view') }}
 
 SELECT

@@ -10,14 +10,7 @@ models:
   - name: dim_videos
     tests:
       - dbt_expectations.expect_table_columns_to_match_set:
-          column_list: 
-            - "VIDEO_ID"
-            - "CLEANED_TEXT"
-            - "TECH_TERM_COUNT"
-            - "BOOK_NAME_COUNT"
-            - "WORD_COUNT"
-            - "CHAR_COUNT"
-            - "PROCESSED_AT"
+          column_list: ["video_id", "cleaned_text", "tech_term_count", "book_name_count", "word_count", "char_count", "processed_at"]
     columns:
       - name: video_id
         tests:

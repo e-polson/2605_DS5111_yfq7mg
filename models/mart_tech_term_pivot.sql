@@ -1,13 +1,20 @@
 {{ config(materialized='table') }}
 
-{% set tech_terms = ['python', 'sql', 'dbt', 'snowflake', 'aws', 'docker'] %}
+-- 1. Define a Python-style list of core terms we want to track
+{% set core_terms = ['python', 'sql', 'dbt', 'snowflake', 'aws', 'docker'] %}
 
 SELECT
-    v.video_id,
-    {% for term in tech_terms %}
-    COALESCE(SUM(CASE WHEN LOWER(t.tech_term) = '{{ term }}' THEN 1 ELSE 0 END), 0) AS {{ term }}_count{% if not loop.last %},{% endif %}
+    video_id,
+    
+    -- 2. Loop through the list to dynamically generate our columns
+    {% for term in core_terms %}
+    
+    SUM(CASE WHEN LOWER(tech_term) = '{{ term }}' THEN 1 ELSE 0 END) AS count_{{ term }}_mentions
+    
+    -- 3. Add a comma if it's not the last item in the loop
+    {% if not loop.last %},{% endif %}
+    
     {% endfor %}
-FROM {{ ref('dim_videos') }} v
-LEFT JOIN {{ ref('fct_tech_terms') }} t
-    ON v.video_id = t.video_id
-GROUP BY 1
+
+FROM {{ ref('fct_tech_terms') }}
+GROUP BY video_id
