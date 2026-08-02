@@ -10,7 +10,14 @@ models:
   - name: dim_videos
     tests:
       - dbt_expectations.expect_table_columns_to_match_set:
-          column_list: ["video_id", "cleaned_text", "tech_term_count", "book_name_count", "word_count", "char_count", "processed_at"]
+          column_list: 
+            - "VIDEO_ID"
+            - "CLEANED_TEXT"
+            - "TECH_TERM_COUNT"
+            - "BOOK_NAME_COUNT"
+            - "WORD_COUNT"
+            - "CHAR_COUNT"
+            - "PROCESSED_AT"
     columns:
       - name: video_id
         tests:
@@ -27,5 +34,5 @@ models:
       - name: book_title
         tests:
           - dbt_expectations.expect_column_value_lengths_to_be_between:
-              min_value: 1000
+              min_value: 2
               max_value: 250
