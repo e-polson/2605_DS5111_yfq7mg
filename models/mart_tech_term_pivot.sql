@@ -1,19 +1,13 @@
 {{ config(materialized='table') }}
 
--- 1. Define the list of terms to pivot
-{% set core_terms = ['python', 'sql', 'dbt', 'snowflake', 'aws', 'docker'] %}
+{% set tech_terms = ['python', 'sql', 'dbt', 'snowflake', 'aws', 'docker'] %}
 
 SELECT
-    video_id,
-    
-    -- 2. Dynamically loop through terms to build aggregate columns
-    {% for term in core_terms %}
-    
-    SUM(CASE WHEN LOWER(term_name) = '{{ term }}' THEN 1 ELSE 0 END) AS count_{{ term }}_mentions
-    
-    {% if not loop.last %},{% endif %}
-    
+    v.video_id,
+    {% for term in tech_terms %}
+    COUNT(CASE WHEN LOWER(t.tech_term) = '{{ term }}' THEN 1 END) AS {{ term }}_count{% if not loop.last %},{% endif %}
     {% endfor %}
-
-FROM {{ ref('fct_tech_terms') }}
-GROUP BY video_id
+FROM {{ ref('dim_videos') }} v
+LEFT JOIN {{ ref('fct_tech_terms') }} t
+    ON v.video_id = t.video_id
+GROUP BY 1
